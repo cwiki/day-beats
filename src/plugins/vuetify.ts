@@ -1,3 +1,4 @@
+import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loader
 import {createVuetify} from 'vuetify'
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
@@ -7,10 +8,10 @@ const myCustomLightTheme = {
     colors: {
         // background: '#FFFFFF',
         // surface: '#FFFFFF',
-        primary: '#6200EE',
-        secondary: '#03DAC6',
+        primary: '#6200ee',
+        secondary: '#03dac5',
         // error: '#B00020',
-        // info: '#2196F3',
+        info: '#ff4f39',
         // success: '#4CAF50',
         // warning: '#FB8C00',
     }
