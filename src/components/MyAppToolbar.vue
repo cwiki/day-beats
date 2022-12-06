@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <v-toolbar color="primary" density="compact">
+  <v-app-bar color="primary" density="compact">
     <v-toolbar-title> Day Beats </v-toolbar-title>
     <v-spacer />
     <v-toolbar-items>
@@ -34,5 +34,5 @@
         </v-tooltip>
       </v-btn>
     </v-toolbar-items>
-  </v-toolbar>
+  </v-app-bar>
 </template>

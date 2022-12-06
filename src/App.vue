@@ -4,8 +4,12 @@ import MyAppToolbar from "@/components/MyAppToolbar.vue";
 </script>
 
 <template>
-  <header>
-    <MyAppToolbar />
-  </header>
-  <RouterView />
+  <v-app>
+      <header>
+        <MyAppToolbar />
+      </header>
+    <v-main>
+      <RouterView />
+    </v-main>
+  </v-app>
 </template>
