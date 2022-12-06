@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import DualTime from "@/components/DualTime.vue";
+import DualTime from "@/components/TimeCompare.vue";
 import { duration } from "moment";
+import DayProgress from "@/components/DayProgress.vue";
 
 const start = duration(30, "minutes");
 const finish = duration(4, "hours");
@@ -39,10 +40,10 @@ const finish = duration(4, "hours");
     </v-row>
     <v-row class="px-8">
       <v-col>
-        <v-progress-linear model-value="20" />
-        <div class="text-right">
-          <DualTime :used="start" :available="finish" />
-        </div>
+        <DayProgress
+          :used="start"
+          :available="finish"
+        />
       </v-col>
     </v-row>
   </v-container>
