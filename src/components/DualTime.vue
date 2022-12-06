@@ -1,11 +1,20 @@
 <script setup lang="ts">
-const props = defineProps({
-  remaining: {
-    type: 
-  }
-})
+import type { Duration } from "moment";
+import type { PropType } from "vue";
+import { durationToHHmm } from "@/common/formatters";
+
+defineProps({
+  used: {
+    type: Object as PropType<Duration>,
+    required: true,
+  },
+  available: {
+    type: Object as PropType<Duration>,
+    required: true,
+  },
+});
 </script>
 
 <template>
-  <strong>03:00 /</strong> 16:00
+  <strong>{{ durationToHHmm(used) }} /</strong> {{ durationToHHmm(available) }}
 </template>
