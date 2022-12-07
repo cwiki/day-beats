@@ -19,7 +19,7 @@ const myCustomLightTheme = {
 
 export default createVuetify({
     theme: {
-        defaultTheme: 'myCustomLightTheme',
+        defaultTheme: 'dark',
         themes: {
             myCustomLightTheme,
         }
