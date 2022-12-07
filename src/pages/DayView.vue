@@ -59,11 +59,11 @@ function addTask() {
                     hide-details
                     hint="Minutes"
                   />
-                  <v-btn type="submit"> add </v-btn>
                 </v-col>
               </v-row>
             </v-card-text>
           </v-card>
+          <button type="submit" class="screen-reader-text"> add </button>
         </v-form>
       </v-col>
     </v-row>
