@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { useTheme } from "vuetify";
 import { useTaskStore } from "@/stores/task";
 import { v4 as uuidV4 } from "uuid";
 import { defineProps, onBeforeUnmount, PropType, ref } from "vue";
 import { type Segment } from "@/common/interfaces";
+import { durationToHHmm } from "@/common/formatters";
 
 const props = defineProps({
   segment: {
@@ -24,6 +26,7 @@ const taskStore = useTaskStore();
 
 function addTask() {
   (function (task: String, duration: number) {
+    if (task === "") return;
     taskStore.addChanges("INSERT", {
       id: uuidV4(),
       description: task,
@@ -37,6 +40,11 @@ function addTask() {
 
 document.addEventListener("keyup", keyupHandler);
 function keyupHandler(event: { ctrlKey: any; key: string }) {}
+
+const durationLabel = computed(() => {
+  if (duration.value) return "Duration " + durationToHHmm(duration.value);
+  return "Duration in Minutes";
+});
 
 onBeforeUnmount(() => {
   document.removeEventListener("keyup", keyupHandler);
@@ -55,7 +63,7 @@ onBeforeUnmount(() => {
               :class="textColor"
               variant="plain"
               density="compact"
-              label="Add Task"
+              label="Add Task (Required)"
               autofocus
               hide-details
             />
@@ -67,7 +75,7 @@ onBeforeUnmount(() => {
               type="number"
               variant="plain"
               density="compact"
-              label="Duration"
+              :label="durationLabel"
               hide-details
               hint="Minutes"
             />

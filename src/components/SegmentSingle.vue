@@ -3,6 +3,7 @@ import TaskList from "@/components/TaskList.vue";
 import TimeCompare from "@/components/TimeCompare.vue";
 import { computed, defineProps, PropType } from "vue";
 import type { Segment } from "@/common/interfaces";
+import { formatTimeRange } from "@/common/formatters";
 import { useTaskStore } from "@/stores/task";
 
 const props = defineProps({
@@ -37,7 +38,10 @@ const available = computed(() => {
   <div>
     <v-row>
       <v-col>
-        <h2 class="text-sm-body-2">{{ modelValue.description }} 6am - 8am</h2>
+        <h2 class="text-sm-body-2">
+          {{ modelValue.description }}
+          {{ formatTimeRange(modelValue.startTime, modelValue.endTime) }}
+        </h2>
       </v-col>
       <v-col class="text-right">
         <TimeCompare :used="used" :available="available" />

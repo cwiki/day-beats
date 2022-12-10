@@ -10,11 +10,10 @@ defineProps({
   },
 });
 
-let selectedItem = ref(null);
 </script>
 
 <template>
-  <v-list v-model="selectedItem">
+  <v-list>
     <template v-for="(task, index) in modelValue" :key="index">
       <TaskListItem :index="String(index + 1)" :modelValue="task" />
       <v-divider />
