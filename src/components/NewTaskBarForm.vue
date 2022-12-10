@@ -2,7 +2,15 @@
 import { useTheme } from "vuetify";
 import { useTaskStore } from "@/stores/task";
 import { v4 as uuidV4 } from "uuid";
-import { onBeforeUnmount, ref } from "vue";
+import { defineProps, onBeforeUnmount, PropType, ref } from "vue";
+import { type Segment } from "@/common/interfaces";
+
+const props = defineProps({
+  segment: {
+    type: Object as PropType<Segment>,
+    required: true,
+  },
+});
 
 const theme = useTheme();
 const textColor =
@@ -10,16 +18,17 @@ const textColor =
 
 const task = ref("");
 const duration = ref(0);
-const xyz = ref(null)
+const xyz = ref(null);
 
 const taskStore = useTaskStore();
 
 function addTask() {
-  (function (task: String, duration: Number) {
+  (function (task: String, duration: number) {
     taskStore.addChanges("INSERT", {
       id: uuidV4(),
       description: task,
-      duration: duration,
+      duration: Number(duration),
+      segmentId: props.segment.id,
     });
   })(task.value, duration.value);
   task.value = "";
@@ -27,8 +36,7 @@ function addTask() {
 }
 
 document.addEventListener("keyup", keyupHandler);
-function keyupHandler(event: { ctrlKey: any; key: string }) {
-}
+function keyupHandler(event: { ctrlKey: any; key: string }) {}
 
 onBeforeUnmount(() => {
   document.removeEventListener("keyup", keyupHandler);

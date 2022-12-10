@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import type { Duration } from "moment";
-import type { PropType } from "vue";
 import TimeCompare from "@/components/TimeCompare.vue";
 
 defineProps({
   used: {
-    type: Object as PropType<Duration>,
+    type: Number,
     required: true,
   },
   available: {
-    type: Object as PropType<Duration>,
+    type: Number,
     required: true,
   },
 });

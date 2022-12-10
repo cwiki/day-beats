@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { Task } from "@/common/interfaces";
-import { type PropType, computed, type ComputedRef } from "vue";
+import { type PropType } from "vue";
 import { durationToHHmm } from "@/common/formatters";
-import moment from "moment";
 import { useTaskStore } from "@/stores/task";
 
 const taskStore = useTaskStore();
@@ -19,7 +18,7 @@ const props = defineProps({
 });
 
 function fmtDur(input: number): String {
-  return durationToHHmm(moment.duration(input, "minutes"));
+  return durationToHHmm(input);
 }
 
 function toggleTaskDone() {

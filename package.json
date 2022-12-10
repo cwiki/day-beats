@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@types/uuid": "^9.0.0",
-    "moment": "^2.29.4",
     "pinia": "^2.0.26",
     "uuid": "^9.0.0",
     "vue": "^3.2.45",

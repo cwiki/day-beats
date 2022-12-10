@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import moment from "moment";
 import DayProgress from "@/components/DayProgress.vue";
-import TaskList from "@/components/TaskList.vue";
 import NewTaskBarForm from "@/components/NewTaskBarForm.vue";
 import { useTaskStore } from "@/stores/task";
-import TimeCompare from "@/components/TimeCompare.vue";
-import { onBeforeUnmount } from "vue";
+import { computed, onBeforeUnmount } from "vue";
+import { Segment } from "@/common/interfaces";
+import { v4 as uuidV4 } from "uuid";
+import SegmentSingle from "@/components/SegmentSingle.vue";
 
-const start = moment.duration(30, "minutes");
-const finish = moment.duration(4, "hours");
+const start = 30;
+const finish = 4 * 60;
 
 const taskStore = useTaskStore();
 document.addEventListener("keyup", keyupHandler);
@@ -25,6 +25,17 @@ function keyupHandler(event: { ctrlKey: any; key: string }) {
   }
 }
 
+const morning: Segment = {
+  id: uuidV4(),
+  description: "Morning",
+  startTime: 60 * 6,
+  endTime: 60 * 8,
+};
+
+const currentSegment = computed(() => {
+  return morning;
+});
+
 onBeforeUnmount(() => {
   document.removeEventListener("keyup", keyupHandler);
 });
@@ -34,7 +45,7 @@ onBeforeUnmount(() => {
   <v-container>
     <v-row class="pt-8">
       <v-col cols="12">
-        <NewTaskBarForm />
+        <NewTaskBarForm :segment="currentSegment" />
       </v-col>
     </v-row>
     <v-row class="px-8">
@@ -43,21 +54,7 @@ onBeforeUnmount(() => {
       </v-col>
     </v-row>
     <h1 class="screen-reader-text">Task List</h1>
-    <div>
-      <v-row>
-        <v-col>
-          <h2 class="text-sm-body-2">Early Morning 6am - 8am</h2>
-        </v-col>
-        <v-col class="text-right">
-          <TimeCompare :used="start" :available="finish" />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col class="px-8">
-          <TaskList v-model="taskStore.tasks" />
-        </v-col>
-      </v-row>
-    </div>
+    <SegmentSingle v-model="morning" />
     <v-btn class="screen-reader-text" @click="taskStore.undo()">undo</v-btn>
     <v-btn class="screen-reader-text" @click="taskStore.redo()">redo</v-btn>
   </v-container>

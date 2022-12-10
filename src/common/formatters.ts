@@ -1,5 +1,4 @@
-import moment, { type Duration } from "moment";
 
-export function durationToHHmm(d: Duration): string {
-  return moment.utc(d.asMilliseconds()).format("HH:mm");
+export function durationToHHmm(minutes: number): string {
+  return new Date(minutes * 60 * 1000).toISOString().substr(11, 5);
 }

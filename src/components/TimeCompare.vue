@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import type { Duration } from "moment";
-import type { PropType } from "vue";
+import { computed } from "vue";
 import { durationToHHmm } from "@/common/formatters";
 
-defineProps({
+const props = defineProps({
   used: {
-    type: Object as PropType<Duration>,
+    type: Number,
     required: true,
   },
   available: {
-    type: Object as PropType<Duration>,
+    type: Number,
     required: true,
   },
 });
+const oa = computed(() => props.used > props.available);
 </script>
 
 <template>
-  <strong>{{ durationToHHmm(used) }} /</strong> {{ durationToHHmm(available) }}
+  <strong :class="{ 'text-red': oa }">{{ durationToHHmm(used) }} /</strong
+  >{{ durationToHHmm(available) }}
 </template>
