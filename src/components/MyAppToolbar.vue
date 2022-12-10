@@ -28,16 +28,16 @@ const showUndoRedo = computed(() => route.name === "Beats");
         <v-icon size="x-large">mdi-redo-variant</v-icon>
         <v-tooltip activator="parent" location="bottom"> cmd + y </v-tooltip>
       </v-btn>
-      <v-btn to="/">
-        <v-icon size="x-large">mdi-format-list-numbered</v-icon>
-        <v-tooltip activator="parent" location="bottom">
-          Task List / Home
-        </v-tooltip>
-      </v-btn>
-      <v-btn to="/config">
-        <v-icon size="x-large">mdi-format-list-bulleted-triangle</v-icon>
-        <v-tooltip activator="parent" location="bottom"> Day Config </v-tooltip>
-      </v-btn>
+      <!--      <v-btn to="/">-->
+      <!--        <v-icon size="x-large">mdi-format-list-numbered</v-icon>-->
+      <!--        <v-tooltip activator="parent" location="bottom">-->
+      <!--          Task List / Home-->
+      <!--        </v-tooltip>-->
+      <!--      </v-btn>-->
+      <!--      <v-btn to="/config">-->
+      <!--        <v-icon size="x-large">mdi-format-list-bulleted-triangle</v-icon>-->
+      <!--        <v-tooltip activator="parent" location="bottom"> Day Config </v-tooltip>-->
+      <!--      </v-btn>-->
     </v-toolbar-items>
   </v-app-bar>
 </template>

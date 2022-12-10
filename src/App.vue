@@ -5,9 +5,9 @@ import MyAppToolbar from "@/components/MyAppToolbar.vue";
 
 <template>
   <v-app>
-      <header>
-        <MyAppToolbar />
-      </header>
+    <header>
+      <MyAppToolbar />
+    </header>
     <v-main>
       <RouterView />
     </v-main>

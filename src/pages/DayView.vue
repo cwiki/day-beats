@@ -3,9 +3,8 @@ import DayProgress from "@/components/DayProgress.vue";
 import NewTaskBarForm from "@/components/NewTaskBarForm.vue";
 import { useTaskStore } from "@/stores/task";
 import { computed, onBeforeUnmount } from "vue";
-import { Segment } from "@/common/interfaces";
-import { v4 as uuidV4 } from "uuid";
 import SegmentSingle from "@/components/SegmentSingle.vue";
+import { getDefaultSegments } from "@/common/helpers";
 
 const start = 30;
 const finish = 4 * 60;
@@ -25,15 +24,18 @@ function keyupHandler(event: { ctrlKey: any; key: string }) {
   }
 }
 
-const morning: Segment = {
-  id: uuidV4(),
-  description: "Morning",
-  startTime: 60 * 6,
-  endTime: 60 * 8,
-};
+const segments = getDefaultSegments();
 
 const currentSegment = computed(() => {
-  return morning;
+  // get the matching segment for current time or first segment
+  const date = new Date();
+  const time = date.getHours() * 60 + date.getMinutes();
+  for (const segment of segments) {
+    if (time >= segment.startTime && segment.endTime > time) {
+      return segment;
+    }
+  }
+  return segments[0];
 });
 
 onBeforeUnmount(() => {
@@ -54,7 +56,11 @@ onBeforeUnmount(() => {
       </v-col>
     </v-row>
     <h1 class="screen-reader-text">Task List</h1>
-    <SegmentSingle v-model="morning" />
+    <SegmentSingle
+      class="mt-8"
+      v-for="segment in segments"
+      :model-value="segment"
+    />
     <v-btn class="screen-reader-text" @click="taskStore.undo()">undo</v-btn>
     <v-btn class="screen-reader-text" @click="taskStore.redo()">redo</v-btn>
   </v-container>
