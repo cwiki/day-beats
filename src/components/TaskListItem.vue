@@ -30,7 +30,7 @@ function toggleTaskDone() {
 </script>
 
 <template>
-  <v-list-item>
+  <v-list-item nav :value="modelValue">
     <v-list-item-title>
       <span class="mr-4">{{ index }}</span>
       <span v-if="!modelValue.done">{{ modelValue.description }}</span>

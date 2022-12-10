@@ -47,7 +47,8 @@ onBeforeUnmount(() => {
               :class="textColor"
               variant="plain"
               density="compact"
-              label="Add Task (press /)"
+              label="Add Task"
+              autofocus
               hide-details
             />
           </v-col>
