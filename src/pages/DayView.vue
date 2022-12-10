@@ -52,13 +52,14 @@ onBeforeUnmount(() => {
     </v-row>
     <v-row class="px-8">
       <v-col>
-        <DayProgress :used="start" :available="finish" />
+        <DayProgress />
       </v-col>
     </v-row>
     <h1 class="screen-reader-text">Task List</h1>
     <SegmentSingle
       class="mt-8"
       v-for="segment in segments"
+      :key="segment.id"
       :model-value="segment"
     />
     <v-btn class="screen-reader-text" @click="taskStore.undo()">undo</v-btn>

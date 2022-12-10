@@ -5,6 +5,7 @@ import { computed, defineProps, PropType } from "vue";
 import type { Segment } from "@/common/interfaces";
 import { formatTimeRange } from "@/common/formatters";
 import { useTaskStore } from "@/stores/task";
+import { calculateTaskListDuration } from "@/common/helpers";
 
 const props = defineProps({
   modelValue: {
@@ -21,10 +22,7 @@ const segmentTasks = computed(() => {
 });
 
 const used = computed(() => {
-  return segmentTasks.value.reduce(
-    (carry, task) => (task.duration ? Number(carry) + task.duration : carry),
-    0
-  );
+  return calculateTaskListDuration(segmentTasks.value);
 });
 
 const available = computed(() => {

@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import type { Task } from "@/common/interfaces";
+import { calculateTaskListDuration } from "@/common/helpers";
 
 type ChangeType = "INSERT" | "UPDATE" | "DELETE";
 
@@ -62,6 +63,12 @@ export const useTaskStore = defineStore("task", {
   getters: {
     tasks(state): Array<Task> {
       return updateTasksWithTaskChangeHistory(state.taskState, state.changes);
+    },
+    allocatedTime(): number {
+      return calculateTaskListDuration(this.tasks);
+    },
+    allocatedTimeDone(): number {
+      return calculateTaskListDuration(this.tasks.filter(task => task.done));
     },
   },
   actions: {

@@ -1,4 +1,4 @@
-import type { Segment } from "@/common/interfaces";
+import type { Segment, Task } from "@/common/interfaces";
 import { v4 as uuidV4 } from "uuid";
 
 export function getDefaultSegments(): Array<Segment> {
@@ -34,4 +34,11 @@ export function getDefaultSegments(): Array<Segment> {
       endTime: 60 * 20 + 30, // 8:30,
     },
   ];
+}
+
+export function calculateTaskListDuration(tasks: Array<Task>): number {
+  return tasks.reduce(
+    (carry, task) => (task.duration ? Number(carry) + task.duration : carry),
+    0
+  );
 }
