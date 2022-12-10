@@ -15,11 +15,6 @@ const router = createRouter({
       name: "Config",
       component: BeatConfig,
     },
-    {
-      path: "/settings",
-      name: "Settings",
-      component: () => import("../pages/SettingsView.vue"),
-    },
   ],
 });
 
