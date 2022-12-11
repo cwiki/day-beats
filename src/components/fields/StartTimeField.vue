@@ -17,16 +17,18 @@ const startTimeField = ref("");
 
 watch(
   () => props.modelValue,
-  (value) => {
-    if (value === null) {
-      startTimeToggle.value = false;
-      startTimeField.value = "";
-    } else {
+  (value: Number | null) => {
+    if (typeof value === "number") {
       startTimeToggle.value = true;
-      const hours = Math.floor(value / 60).toString().padStart(2, "0");
+      const hours = Math.floor(value / 60)
+        .toString()
+        .padStart(2, "0");
       const minutes = (value % 60).toString().padStart(2, "0");
       minutes.toString().padStart(2, "0");
       startTimeField.value = `${hours}:${minutes}`;
+    } else {
+      startTimeToggle.value = false;
+      startTimeField.value = "";
     }
   },
   { immediate: true }

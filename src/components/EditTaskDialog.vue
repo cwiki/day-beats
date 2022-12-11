@@ -25,11 +25,13 @@ const duration = ref(0);
 const startTime = ref<number | null>(null);
 
 watch(
-  () => props.task,
-  (task) => {
-    description.value = String(task.description);
-    duration.value = task.duration || 0;
-    startTime.value = task.startTime ? Number(task.startTime) : null;
+  () => props.modelValue,
+  (opened) => {
+    if (opened) {
+      description.value = String(props.task.description);
+      duration.value = props.task.duration || 0;
+      startTime.value = props.task.startTime ? Number(props.task.startTime) : null;
+    }
   },
   { immediate: true }
 );
@@ -84,11 +86,7 @@ function deleteTask() {
             <StartTimeField v-model:modelValue="startTime" />
             <div class="mt-8" />
             <h2 class="text-h5">Preview</h2>
-            <v-card>
-              <v-card-text>
-                <TaskListItem :modelValue="updatedTask" />
-              </v-card-text>
-            </v-card>
+            <TaskListItem class="elevation-1" :modelValue="updatedTask" />
             <v-card class="mt-8" variant="flat">
               <v-card-actions>
                 <v-spacer />

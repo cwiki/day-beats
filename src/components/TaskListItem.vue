@@ -3,6 +3,7 @@ import { Task } from "@/common/interfaces";
 import { type PropType } from "vue";
 import { durationToHHmm } from "@/common/formatters";
 import { useTaskStore } from "@/stores/task";
+import TaskStartTime from "@/components/TaskStartTime.vue";
 
 const taskStore = useTaskStore();
 const props = defineProps({
@@ -34,6 +35,9 @@ function toggleTaskDone() {
       <span class="mr-4">{{ index }}</span>
       <span v-if="!modelValue.done">{{ modelValue.description }}</span>
       <del v-else>{{ modelValue.description }}</del>
+    </template>
+    <template v-slot:subtitle>
+      <TaskStartTime class="ml-1" :modelValue="modelValue" />
     </template>
     <template v-slot:append>
       {{ fmtDur(modelValue.duration) }}
