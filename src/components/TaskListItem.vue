@@ -16,6 +16,10 @@ const props = defineProps({
     type: Object as PropType<Task>,
     required: true,
   },
+  readonly: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 function fmtDur(input: number): String {
@@ -23,6 +27,7 @@ function fmtDur(input: number): String {
 }
 
 function toggleTaskDone() {
+  if (props.readonly) return;
   const clone = Object.assign({}, props.modelValue);
   clone.done = !clone.done;
   taskStore.addChanges("UPDATE", clone);

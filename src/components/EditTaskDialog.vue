@@ -86,7 +86,7 @@ function deleteTask() {
             <StartTimeField v-model:modelValue="startTime" />
             <div class="mt-8" />
             <h2 class="text-h5">Preview</h2>
-            <TaskListItem class="elevation-1" :modelValue="updatedTask" />
+            <TaskListItem class="elevation-1" :modelValue="updatedTask" readonly />
             <v-card class="mt-8" variant="flat">
               <v-card-actions>
                 <v-spacer />
