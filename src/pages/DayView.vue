@@ -54,7 +54,7 @@ onBeforeUnmount(() => {
     </v-row>
     <h1 class="screen-reader-text">Task List</h1>
     <SegmentSingle
-      class="mt-8"
+      class="mt-8 px-12"
       v-for="segment in segments"
       :key="segment.id"
       :model-value="segment"

@@ -33,7 +33,7 @@ const available = computed(() => {
 </script>
 
 <template>
-  <div>
+  <v-sheet>
     <v-row>
       <v-col>
         <h2 class="text-sm-body-2">
@@ -46,9 +46,9 @@ const available = computed(() => {
       </v-col>
     </v-row>
     <v-row>
-      <v-col class="px-8">
+      <v-col class="pl-4">
         <TaskList v-model="segmentTasks" />
       </v-col>
     </v-row>
-  </div>
+  </v-sheet>
 </template>
