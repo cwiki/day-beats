@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, watch, defineEmits, type PropType } from "vue";
 import { Task } from "@/common/interfaces";
+import { useTaskStore } from "@/stores/task";
 import TaskListItem from "@/components/TaskListItem.vue";
 import TaskComboField from "@/components/fields/TaskComboField.vue";
-import { useTaskStore } from "@/stores/task";
+import StartTimeField from "@/components/fields/StartTimeField.vue";
 
 const emits = defineEmits(["update:modelValue"]);
 const taskStore = useTaskStore();
@@ -21,12 +22,14 @@ const props = defineProps({
 
 const description = ref("");
 const duration = ref(0);
+const startTime = ref<number | null>(null);
 
 watch(
   () => props.task,
   (task) => {
     description.value = String(task.description);
     duration.value = task.duration || 0;
+    startTime.value = task.startTime ? Number(task.startTime) : null;
   },
   { immediate: true }
 );
@@ -35,11 +38,12 @@ const updatedTask = computed(() => {
   return Object.assign({}, props.task, {
     description: description.value,
     duration: duration.value,
+    startTime: startTime.value,
   });
 });
 
 function saveTask() {
-  taskStore.addChanges("UPDATE", updatedTask);
+  taskStore.addChanges("UPDATE", updatedTask.value);
   emits("update:modelValue", false);
 }
 
@@ -71,11 +75,16 @@ function deleteTask() {
       <v-card-text>
         <v-container>
           <v-form @submit.prevent="saveTask">
+            <h2 class="text-h5">Basic Fields</h2>
             <TaskComboField
               v-model:description="description"
               v-model:duration="duration"
             />
-            <v-card class="mt-8" variant="outlined">
+            <div class="mt-8" />
+            <StartTimeField v-model:modelValue="startTime" />
+            <div class="mt-8" />
+            <h2 class="text-h5">Preview</h2>
+            <v-card>
               <v-card-text>
                 <TaskListItem :modelValue="updatedTask" />
               </v-card-text>

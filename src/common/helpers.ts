@@ -1,5 +1,6 @@
 import type { Segment, Task } from "@/common/interfaces";
 import { v4 as uuidV4 } from "uuid";
+import { useTheme } from "vuetify";
 
 export function getDefaultSegments(): Array<Segment> {
   return [
@@ -41,4 +42,9 @@ export function calculateTaskListDuration(tasks: Array<Task>): number {
     (carry, task) => (task.duration ? Number(carry) + task.duration : carry),
     0
   );
+}
+
+export function getFormFieldTextColor() {
+  const theme = useTheme();
+  return theme.global.name.value === "dark" ? "text-white" : "text-black";
 }
