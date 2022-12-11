@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import DayProgress from "@/components/DayProgress.vue";
-import NewTaskBarForm from "@/components/NewTaskBarForm.vue";
+import { computed, onBeforeUnmount, ref } from "vue";
 import { useTaskStore } from "@/stores/task";
-import { computed, onBeforeUnmount } from "vue";
-import SegmentSingle from "@/components/SegmentSingle.vue";
 import { getDefaultSegments } from "@/common/helpers";
-
-const start = 30;
-const finish = 4 * 60;
+import NewTaskBarForm from "@/components/NewTaskBarForm.vue";
+import DayProgress from "@/components/DayProgress.vue";
+import SegmentSingle from "@/components/SegmentSingle.vue";
 
 const taskStore = useTaskStore();
 document.addEventListener("keyup", keyupHandler);

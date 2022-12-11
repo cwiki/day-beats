@@ -68,7 +68,7 @@ export const useTaskStore = defineStore("task", {
       return calculateTaskListDuration(this.tasks);
     },
     allocatedTimeDone(): number {
-      return calculateTaskListDuration(this.tasks.filter(task => task.done));
+      return calculateTaskListDuration(this.tasks.filter((task) => task.done));
     },
   },
   actions: {
