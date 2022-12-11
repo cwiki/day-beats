@@ -1,6 +1,12 @@
 <script setup lang="ts">
-import type { PropType } from "vue";
+import { ref, computed, watch, defineEmits, type PropType } from "vue";
 import { Task } from "@/common/interfaces";
+import TaskListItem from "@/components/TaskListItem.vue";
+import TaskComboField from "@/components/fields/TaskComboField.vue";
+import { useTaskStore } from "@/stores/task";
+
+const emits = defineEmits(["update:modelValue"]);
+const taskStore = useTaskStore();
 
 const props = defineProps({
   modelValue: {
@@ -12,6 +18,35 @@ const props = defineProps({
     required: true,
   },
 });
+
+const description = ref("");
+const duration = ref(0);
+
+watch(
+  () => props.task,
+  (task) => {
+    description.value = String(task.description);
+    duration.value = task.duration || 0;
+  },
+  { immediate: true }
+);
+
+const updatedTask = computed(() => {
+  return Object.assign({}, props.task, {
+    description: description.value,
+    duration: duration.value,
+  });
+});
+
+function saveTask() {
+  taskStore.addChanges("UPDATE", updatedTask);
+  emits("update:modelValue", false);
+}
+
+function deleteTask() {
+  taskStore.addChanges("DELETE", props.task);
+  emits("update:modelValue", false);
+}
 </script>
 
 <template>
@@ -30,10 +65,36 @@ const props = defineProps({
         <v-toolbar-title>Edit Task</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn variant="text" @click="$emit('update:modelValue', false)"> Save </v-btn>
+          <v-btn variant="text" @click="saveTask"> Save </v-btn>
         </v-toolbar-items>
       </v-toolbar>
-      {{ task }}
+      <v-card-text>
+        <v-container>
+          <v-form @submit.prevent="saveTask">
+            <TaskComboField
+              v-model:description="description"
+              v-model:duration="duration"
+            />
+            <v-card class="mt-8" variant="outlined">
+              <v-card-text>
+                <TaskListItem :modelValue="updatedTask" />
+              </v-card-text>
+            </v-card>
+            <v-card class="mt-8" variant="flat">
+              <v-card-actions>
+                <v-spacer />
+                <v-btn @click="deleteTask" color="error" variant="text"
+                  >Delete</v-btn
+                >
+                <v-btn @click="saveTask" color="primary" variant="flat"
+                  >Save</v-btn
+                >
+              </v-card-actions>
+            </v-card>
+            <button type="submit" class="screen-reader-text">save</button>
+          </v-form>
+        </v-container>
+      </v-card-text>
     </v-card>
   </v-dialog>
 </template>

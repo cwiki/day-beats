@@ -15,7 +15,6 @@ function minutesToTime(minutes: number) {
 }
 
 export function formatTimeRange(start: number, end: number): string {
-  console.log(start, end);
   const startArr = minutesToTime(start);
   const endArr = minutesToTime(end);
   if (startArr[1] === endArr[1]) {

@@ -33,5 +33,5 @@ function editTask(t: Task) {
       <v-divider />
     </template>
   </v-list>
-  <EditTaskDialog v-model:modelValue="dialog" :task="task" />
+  <EditTaskDialog v-if="task" v-model:modelValue="dialog" :task="task" />
 </template>

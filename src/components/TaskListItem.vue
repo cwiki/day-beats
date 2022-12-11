@@ -3,9 +3,7 @@ import { Task } from "@/common/interfaces";
 import { type PropType } from "vue";
 import { durationToHHmm } from "@/common/formatters";
 import { useTaskStore } from "@/stores/task";
-import { defineEmits } from "vue";
 
-const emit = defineEmits(["click"]);
 const taskStore = useTaskStore();
 const props = defineProps({
   index: {
@@ -28,19 +26,18 @@ function toggleTaskDone() {
   clone.done = !clone.done;
   taskStore.addChanges("UPDATE", clone);
 }
-
 </script>
 
 <template>
   <v-list-item @click="$emit('click')">
-    <v-list-item-title>
+    <template v-slot:title>
       <span class="mr-4">{{ index }}</span>
       <span v-if="!modelValue.done">{{ modelValue.description }}</span>
       <del v-else>{{ modelValue.description }}</del>
-    </v-list-item-title>
+    </template>
     <template v-slot:append>
       {{ fmtDur(modelValue.duration) }}
-      <v-btn class="ml-4" @click.stop="toggleTaskDone" icon>
+      <v-btn class="ml-4" variant="flat" @click.stop="toggleTaskDone" icon>
         <v-icon v-if="modelValue.done" class="text-green-lighten-1">
           mdi-checkbox-marked-outline
         </v-icon>
