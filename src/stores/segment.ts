@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import type { ChangeType, Segment, Change } from "@/common/interfaces";
 import { updateSegmentsWithIdentifiableHistory } from "@/common/UndoRedo";
-import {computed} from "vue";
 
 export const useSegmentStore = defineStore("segment", {
   state: () => {
@@ -12,22 +11,37 @@ export const useSegmentStore = defineStore("segment", {
     };
   },
   getters: {
-    segments(state): Array<Segment> {
-      return updateSegmentsWithIdentifiableHistory<Segment>(
+    segments: function (state): Array<Segment> {
+      const segs = updateSegmentsWithIdentifiableHistory<Segment>(
         state.segmentState,
         state.changes
       );
+      segs.sort((segA, segB) => segA.startTime - segB.startTime);
+      return segs;
     },
-    currentSegment(): Segment {
+    currentSegment(): Segment | null {
       // get the matching segment for current time or first segment
-      const date = new Date();
-      const time = date.getHours() * 60 + date.getMinutes();
-      for (const segment of this.segments) {
-        if (time >= segment.startTime && segment.endTime > time) {
-          return segment;
+      // todo refactor code
+      let seg: Segment | null = null
+      let segVariance = 0
+      if (this.segments.length) {
+        const date = new Date();
+        const time = date.getHours() * 60 + date.getMinutes();
+
+        // default to 0 else find closest time
+        seg = this.segments[0]
+        segVariance = Math.abs(time - this.segments[0].startTime)
+        for (const segment of this.segments) {
+          const thisVariance = Math.abs(time - segment.startTime)
+
+          if (time >= segment.startTime && segment.endTime > time) {
+            return segment;
+          } else if (time >= segment.startTime && thisVariance < segVariance) {
+            seg = segment
+          }
         }
       }
-      return this.segments[0];
+      return seg;
     },
   },
   actions: {
@@ -42,7 +56,10 @@ export const useSegmentStore = defineStore("segment", {
     addChanges(action: ChangeType, ...segments: Array<Segment>) {
       this.undone = [];
       // immediately perform segment merge
-      const changes: Array<Change> = segments.map((entity) => ({ action, entity }));
+      const changes: Array<Change> = segments.map((entity) => ({
+        action,
+        entity,
+      }));
       this.changes.push(changes);
     },
   },

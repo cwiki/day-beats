@@ -33,6 +33,7 @@ const available = computed(() => {
 // used = number of hours total in tasks
 // available = number of hours in segment diff between dates
 const isCurrentSegment = computed(() => {
+  if (!segmentStore.currentSegment) return null
   return props.modelValue.id === segmentStore.currentSegment.id;
 });
 </script>

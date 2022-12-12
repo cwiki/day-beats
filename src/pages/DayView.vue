@@ -34,7 +34,8 @@ onBeforeUnmount(() => {
   <v-container>
     <v-row class="pt-8">
       <v-col cols="12">
-        <NewTaskBarForm :segment="segmentStore.currentSegment" />
+        <NewTaskBarForm v-if=segmentStore.currentSegment :segment="segmentStore.currentSegment" />
+        <div v-else>Segment is required</div>
       </v-col>
     </v-row>
     <v-row class="px-8">
