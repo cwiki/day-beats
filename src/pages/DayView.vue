@@ -47,7 +47,7 @@ onBeforeUnmount(() => {
     <SegmentSingle
       class="mt-8 px-12"
       v-for="segment in segments"
-      :key="segment.id"
+      :key="segment.id.toString()"
       :model-value="segment"
     />
     <v-btn class="screen-reader-text" @click="taskStore.undo()">undo</v-btn>

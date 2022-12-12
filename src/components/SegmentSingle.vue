@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import TaskList from "@/components/TaskList.vue";
 import TimeCompare from "@/components/TimeCompare.vue";
-import { computed, defineProps, PropType } from "vue";
+import { computed, defineProps, type PropType } from "vue";
 import type { Segment } from "@/common/interfaces";
 import { formatTimeRange } from "@/common/formatters";
 import { useTaskStore } from "@/stores/task";

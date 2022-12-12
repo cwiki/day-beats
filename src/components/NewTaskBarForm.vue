@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { defineProps, PropType, ref } from "vue";
+import { defineProps, type PropType, ref } from "vue";
 import { v4 as uuidV4 } from "uuid";
 import { useTaskStore } from "@/stores/task";
-import { type Segment } from "@/common/interfaces";
+import type { Segment } from "@/common/interfaces";
 import TaskComboField from "@/components/fields/TaskComboField.vue";
 
 const props = defineProps({

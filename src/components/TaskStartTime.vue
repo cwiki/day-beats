@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { defineProps, PropType, computed } from "vue";
-import { Task } from "@/common/interfaces";
+import { defineProps, type PropType, computed } from "vue";
+import type { Task } from "@/common/interfaces";
 import { getTaskStartTimeText } from "@/common/formatters";
 
 const props = defineProps({

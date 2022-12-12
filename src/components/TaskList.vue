@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { Task } from "@/common/interfaces";
+import type { Task } from "@/common/interfaces";
 import { ref, type PropType } from "vue";
 import TaskListItem from "@/components/TaskListItem.vue";
-import { useTaskStore } from "@/stores/task";
 import EditTaskDialog from "@/components/EditTaskDialog.vue";
-
-const taskStore = useTaskStore();
 
 defineProps({
   modelValue: {

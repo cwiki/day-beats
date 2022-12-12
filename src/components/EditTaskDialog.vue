@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, watch, defineEmits, type PropType } from "vue";
-import { Task } from "@/common/interfaces";
+import type { Task } from "@/common/interfaces";
 import { useTaskStore } from "@/stores/task";
 import TaskListItem from "@/components/TaskListItem.vue";
 import TaskComboField from "@/components/fields/TaskComboField.vue";
 import StartTimeField from "@/components/fields/StartTimeField.vue";
-import SegmentSelect from "@/components/fields/SegmentSelect.vue";
 
 const emits = defineEmits(["update:modelValue"]);
 const taskStore = useTaskStore();
@@ -88,7 +87,6 @@ function deleteTask() {
             <div class="mt-8" />
             <h2 class="text-h5">Preview</h2>
             <TaskListItem class="elevation-1" :modelValue="updatedTask" readonly />
-            <SegmentSelect />
             <v-card class="mt-8" variant="flat">
               <v-card-actions>
                 <v-spacer />

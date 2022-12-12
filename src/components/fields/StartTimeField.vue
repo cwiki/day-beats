@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { defineProps, defineEmits, watch, ref } from "vue";
+import { defineProps, defineEmits, watch, ref, type PropType } from "vue";
 import { getFormFieldTextColor } from "@/common/helpers";
-import { tr } from "vuetify/locale";
 
 const emits = defineEmits(["update:modelValue"]);
 
 const props = defineProps({
   modelValue: {
-    type: Number,
+    type: Object as PropType<Number | null>,
     default: null,
   },
 });

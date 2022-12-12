@@ -5,9 +5,10 @@ export function durationToHHmm(minutes: number): string {
 }
 
 function minutesToTime(minutes: number) {
+  // todo fixed this it's forked
   const hours = Math.floor(minutes / 60);
   const mins = Math.floor(minutes % 60);
-  const afternoon = hours > 12;
+  const afternoon = hours >= 12;
   const tod = afternoon ? "pm" : "am";
   let time = String(afternoon ? hours - 12 : hours);
   if (mins > 0) {

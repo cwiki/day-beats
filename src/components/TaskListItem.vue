@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Task } from "@/common/interfaces";
-import { type PropType } from "vue";
+import type { Task } from "@/common/interfaces";
+import type { PropType } from "vue";
 import { durationToHHmm } from "@/common/formatters";
 import { useTaskStore } from "@/stores/task";
 import TaskStartTime from "@/components/TaskStartTime.vue";
@@ -41,12 +41,20 @@ function toggleTaskDone() {
       <span v-if="!modelValue.done">{{ modelValue.description }}</span>
       <del v-else>{{ modelValue.description }}</del>
     </template>
-    <template v-slot:subtitle>
+    <template v-if="modelValue.startTime" v-slot:subtitle>
       <TaskStartTime class="ml-1" :modelValue="modelValue" />
     </template>
     <template v-slot:append>
-      {{ fmtDur(modelValue.duration) }}
-      <v-btn class="ml-4" variant="flat" @click.stop="toggleTaskDone" icon>
+      <span v-if="modelValue.duration">
+        {{ fmtDur(modelValue.duration) }}
+      </span>
+      <v-btn
+        class="ml-4"
+        variant="flat"
+        @click.stop="toggleTaskDone"
+        icon
+        size="small"
+      >
         <v-icon v-if="modelValue.done" class="text-green-lighten-1">
           mdi-checkbox-marked-outline
         </v-icon>
