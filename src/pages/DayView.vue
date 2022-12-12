@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from "vue";
+import { onBeforeUnmount } from "vue";
 import { useTaskStore } from "@/stores/task";
-import { getDefaultSegments } from "@/common/helpers";
+import { useSegmentStore } from "@/stores/segment";
 import NewTaskBarForm from "@/components/NewTaskBarForm.vue";
 import DayProgress from "@/components/DayProgress.vue";
 import SegmentSingle from "@/components/SegmentSingle.vue";
 
 const taskStore = useTaskStore();
+const segmentStore = useSegmentStore();
+
 document.addEventListener("keyup", keyupHandler);
 function keyupHandler(event: { ctrlKey: any; key: string }) {
   if (event.ctrlKey) {
@@ -21,19 +23,7 @@ function keyupHandler(event: { ctrlKey: any; key: string }) {
   }
 }
 
-const segments = getDefaultSegments();
-
-const currentSegment = computed(() => {
-  // get the matching segment for current time or first segment
-  const date = new Date();
-  const time = date.getHours() * 60 + date.getMinutes();
-  for (const segment of segments) {
-    if (time >= segment.startTime && segment.endTime > time) {
-      return segment;
-    }
-  }
-  return segments[0];
-});
+const segments = segmentStore.segments;
 
 onBeforeUnmount(() => {
   document.removeEventListener("keyup", keyupHandler);
@@ -44,7 +34,7 @@ onBeforeUnmount(() => {
   <v-container>
     <v-row class="pt-8">
       <v-col cols="12">
-        <NewTaskBarForm :segment="currentSegment" />
+        <NewTaskBarForm :segment="segmentStore.currentSegment" />
       </v-col>
     </v-row>
     <v-row class="px-8">

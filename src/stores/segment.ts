@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import type { ChangeType, Segment, Change } from "@/common/interfaces";
 import { updateSegmentsWithIdentifiableHistory } from "@/common/UndoRedo";
+import {computed} from "vue";
 
 export const useSegmentStore = defineStore("segment", {
   state: () => {
@@ -16,6 +17,17 @@ export const useSegmentStore = defineStore("segment", {
         state.segmentState,
         state.changes
       );
+    },
+    currentSegment(): Segment {
+      // get the matching segment for current time or first segment
+      const date = new Date();
+      const time = date.getHours() * 60 + date.getMinutes();
+      for (const segment of this.segments) {
+        if (time >= segment.startTime && segment.endTime > time) {
+          return segment;
+        }
+      }
+      return this.segments[0];
     },
   },
   actions: {
