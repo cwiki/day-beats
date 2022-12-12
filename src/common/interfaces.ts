@@ -1,6 +1,9 @@
-export interface Task {
+export interface Identifiable {
   id: String;
   description: String;
+}
+
+export interface Task extends Identifiable {
   duration?: number; // in minutes
   startTime?: number;
   done?: Boolean;
@@ -9,9 +12,19 @@ export interface Task {
 }
 
 // Describes a users define segment of the day
-export interface Segment {
-  id: String;
-  description: String;
+export interface Segment extends Identifiable {
   startTime: number;
   endTime: number;
+}
+
+export type ChangeType = "INSERT" | "UPDATE" | "DELETE";
+
+export interface TaskChange {
+  action: ChangeType;
+  task: Task;
+}
+
+export interface Change {
+  action: ChangeType;
+  entity: Identifiable;
 }
