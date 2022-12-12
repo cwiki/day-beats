@@ -33,7 +33,7 @@ const available = computed(() => {
 // used = number of hours total in tasks
 // available = number of hours in segment diff between dates
 const isCurrentSegment = computed(() => {
-  if (!segmentStore.currentSegment) return null
+  if (!segmentStore.currentSegment) return null;
   return props.modelValue.id === segmentStore.currentSegment.id;
 });
 </script>
@@ -50,7 +50,15 @@ const isCurrentSegment = computed(() => {
       <v-col>
         <h2 class="text-sm-body-2">
           <strong>
-            <span :class="{ 'activeSegment': isCurrentSegment }">
+            <v-btn
+              class="pb-1"
+              :class="{ activeSegment: isCurrentSegment }"
+              @click="segmentStore.setSegment(modelValue)"
+              flat
+              :icon=" isCurrentSegment ? 'mdi-circle' : 'mdi-circle-outline'"
+              size="x-small"
+            />
+            <span :class="{ activeSegment: isCurrentSegment }">
               {{ modelValue.description }}
             </span>
             {{ formatTimeRange(modelValue.startTime, modelValue.endTime) }}
