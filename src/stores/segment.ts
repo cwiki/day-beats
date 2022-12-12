@@ -53,6 +53,9 @@ export const useSegmentStore = defineStore("segment", {
     },
   },
   actions: {
+    setSegmentState(segmentState: Array<Segment>) {
+      this.segmentState = segmentState;
+    },
     setSegment(segment: Segment) {
       this.currentSegmentId = segment.id;
     },

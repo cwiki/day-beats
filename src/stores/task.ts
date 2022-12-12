@@ -34,6 +34,9 @@ export const useTaskStore = defineStore("task", {
       const undoneChange = this.undone.pop();
       if (undoneChange !== undefined) this.changes.push(undoneChange);
     },
+    setTaskState(taskState: Array<Task>) {
+      this.taskState = taskState;
+    },
     addChanges(action: ChangeType, ...tasks: Array<Task>) {
       this.undone = [];
       // immediately perform task merge
