@@ -2,12 +2,14 @@
 import { ref, computed, watch, defineEmits, type PropType } from "vue";
 import type { Task } from "@/common/interfaces";
 import { useTaskStore } from "@/stores/task";
+import { useSegmentStore } from "@/stores/segment";
 import TaskListItem from "@/components/TaskListItem.vue";
 import TaskComboField from "@/components/fields/TaskComboField.vue";
 import StartTimeField from "@/components/fields/StartTimeField.vue";
 
 const emits = defineEmits(["update:modelValue"]);
 const taskStore = useTaskStore();
+const segmentStore = useSegmentStore();
 
 const props = defineProps({
   modelValue: {
@@ -22,7 +24,8 @@ const props = defineProps({
 
 const description = ref("");
 const duration = ref(0);
-const startTime = ref<number | null>(null);
+const startTime = ref<number | undefined>(null);
+const segmentId = ref<String | undefined>(null);
 
 watch(
   () => props.modelValue,
@@ -30,7 +33,8 @@ watch(
     if (opened) {
       description.value = String(props.task.description);
       duration.value = props.task.duration || 0;
-      startTime.value = props.task.startTime ? Number(props.task.startTime) : null;
+      startTime.value = props.task.startTime;
+      segmentId.value = props.task.segmentId;
     }
   },
   { immediate: true }
@@ -41,6 +45,7 @@ const updatedTask = computed(() => {
     description: description.value,
     duration: duration.value,
     startTime: startTime.value,
+    segmentId: segmentId.value,
   });
 });
 
@@ -83,10 +88,26 @@ function deleteTask() {
               v-model:duration="duration"
             />
             <div class="mt-8" />
+            <h2 class="text-h5">Segment</h2>
+            <v-radio-group inline v-model="segmentId">
+              <v-radio
+                v-for="(segment, index) in segmentStore.segments"
+                :key="index"
+                :label="segment.description"
+                :value="segment.id"
+              >
+              </v-radio>
+            </v-radio-group>
+            <div class="mt-8" />
+            <h2 class="text-h5">Start Time</h2>
             <StartTimeField v-model:modelValue="startTime" />
             <div class="mt-8" />
             <h2 class="text-h5">Preview</h2>
-            <TaskListItem class="elevation-1" :modelValue="updatedTask" readonly />
+            <TaskListItem
+              class="elevation-1"
+              :modelValue="updatedTask"
+              readonly
+            />
             <v-card class="mt-8" variant="flat">
               <v-card-actions>
                 <v-spacer />
