@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import type { Change, ChangeType, Task } from "@/common/interfaces";
 import { calculateTaskListDuration } from "@/common/helpers";
 import { updateSegmentsWithIdentifiableHistory } from "@/common/UndoRedo";
+import { useSegmentStore } from "@/stores/segment";
 
 export const useTaskStore = defineStore("task", {
   state: () => {
@@ -17,6 +18,27 @@ export const useTaskStore = defineStore("task", {
         state.taskState,
         state.changes
       );
+    },
+    taskIndexes() {
+      const segments = useSegmentStore();
+      const tasks: Array<Task> = [];
+      segments.segments.forEach((segment) => {
+        this.tasks.forEach((task) => {
+          if (segment.id === task.segmentId) {
+            tasks.push(task);
+          }
+        });
+      });
+      // add any tasks without a segment
+      this.tasks.forEach((task) => {
+        if (!task.segmentId) tasks.push(task);
+      });
+      const accum = new Map();
+      for (const index in tasks) {
+        const id = tasks[index].id;
+        accum.set(id.toString(), Number(index) + 1);
+      }
+      return accum;
     },
     allocatedTime(): number {
       return calculateTaskListDuration(this.tasks);

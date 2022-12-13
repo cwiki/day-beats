@@ -22,11 +22,7 @@ function editTask(t: Task) {
 <template>
   <v-list>
     <template v-for="(task, index) in modelValue" :key="index">
-      <TaskListItem
-        @click="editTask(task)"
-        :index="String(index + 1)"
-        :modelValue="task"
-      />
+      <TaskListItem @click="editTask(task)" :modelValue="task" />
       <v-divider />
     </template>
   </v-list>

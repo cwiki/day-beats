@@ -60,10 +60,6 @@ function clearTasks() {
           Toggle Dark Mode
         </v-tooltip>
       </v-btn>
-      <!--      <v-btn to="/config">-->
-      <!--        <v-icon size="x-large">mdi-format-list-bulleted-triangle</v-icon>-->
-      <!--        <v-tooltip activator="parent" location="bottom"> Day Config </v-tooltip>-->
-      <!--      </v-btn>-->
     </v-toolbar-items>
   </v-app-bar>
 </template>

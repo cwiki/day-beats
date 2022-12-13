@@ -7,11 +7,6 @@ import TaskStartTime from "@/components/TaskStartTime.vue";
 
 const taskStore = useTaskStore();
 const props = defineProps({
-  index: {
-    type: String,
-    default: "?",
-    required: false,
-  },
   modelValue: {
     type: Object as PropType<Task>,
     required: true,
@@ -37,7 +32,7 @@ function toggleTaskDone() {
 <template>
   <v-list-item @click="$emit('click')">
     <template v-slot:prepend>
-      <span class="mr-4">{{ index }}</span>
+      <span class="mr-4">{{ taskStore.taskIndexes.get(modelValue.id) }}</span>
     </template>
     <template v-slot:title>
       <span v-if="!modelValue.done">{{ modelValue.description }}</span>
