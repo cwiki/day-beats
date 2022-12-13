@@ -16,6 +16,8 @@ const oa = computed(() => props.used > props.available);
 </script>
 
 <template>
-  <strong :class="{ 'text-red': oa }">{{ durationToHHmm(used) }} / </strong
-  >{{ durationToHHmm(available) }}
+  <span>
+    <strong :class="{ 'text-red': oa }">{{ durationToHHmm(used) }} / </strong
+    >{{ durationToHHmm(available) }}
+  </span>
 </template>

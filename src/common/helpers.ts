@@ -36,7 +36,6 @@ export function getDefaultSegments(): Array<Segment> {
     },
   ];
 }
-
 export function calculateTaskListDuration(tasks: Array<Task>): number {
   return tasks.reduce(
     (carry, task) => (task.duration ? Number(carry) + task.duration : carry),
@@ -48,3 +47,4 @@ export function getFormFieldTextColor() {
   const theme = useTheme();
   return theme.global.name.value === "dark" ? "text-white" : "text-black";
 }
+

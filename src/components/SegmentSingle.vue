@@ -38,12 +38,6 @@ const isCurrentSegment = computed(() => {
 });
 </script>
 
-<style scoped>
-.activeSegment {
-  color: #6200ee;
-}
-</style>
-
 <template>
   <v-sheet>
     <v-row>
@@ -51,14 +45,16 @@ const isCurrentSegment = computed(() => {
         <h2 class="text-sm-body-2">
           <strong>
             <v-btn
-              class="pb-1"
+              :color="isCurrentSegment ? 'primary' : ''"
               :class="{ activeSegment: isCurrentSegment }"
-              @click="segmentStore.setSegment(modelValue)"
+              :icon="isCurrentSegment ? 'mdi-circle' : 'mdi-circle-outline'"
+              variant="text"
+              class="pb-1"
               flat
-              :icon=" isCurrentSegment ? 'mdi-circle' : 'mdi-circle-outline'"
               size="x-small"
+              @click="segmentStore.setSegment(modelValue)"
             />
-            <span :class="{ activeSegment: isCurrentSegment }">
+            <span :class="{ 'text-primary': isCurrentSegment }">
               {{ modelValue.description }}
             </span>
             {{ formatTimeRange(modelValue.startTime, modelValue.endTime) }}

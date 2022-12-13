@@ -11,11 +11,18 @@ const percentDone = computed(() => {
 </script>
 
 <template>
-  <v-progress-linear :model-value="percentDone" />
-  <div class="text-right">
-    <TimeCompare
-      :used="taskStore.allocatedTimeDone"
-      :available="taskStore.allocatedTime"
-    />
-  </div>
+  <v-progress-linear
+    rounded
+    color="secondary"
+    :model-value="percentDone"
+    height="14"
+  >
+    <span class="text-sm-caption text-black">
+      <TimeCompare
+        :used="taskStore.allocatedTimeDone"
+        :available="taskStore.allocatedTime"
+      />
+    </span>
+  </v-progress-linear>
+  <div class="text-right"></div>
 </template>

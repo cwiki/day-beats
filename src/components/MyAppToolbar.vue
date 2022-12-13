@@ -2,9 +2,20 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useTaskStore } from "@/stores/task";
+import { useTheme } from "vuetify";
+
 const taskStore = useTaskStore();
 const route = useRoute();
 const showUndoRedo = computed(() => route.name === "Beats");
+const theme = useTheme();
+
+function toggleTheme() {
+  if (theme.global.name.value === "beatLight") {
+    theme.global.name.value = "beatDark";
+  } else {
+    theme.global.name.value = "beatLight";
+  }
+}
 </script>
 
 <template>
@@ -27,6 +38,12 @@ const showUndoRedo = computed(() => route.name === "Beats");
       >
         <v-icon size="x-large">mdi-redo-variant</v-icon>
         <v-tooltip activator="parent" location="bottom"> cmd + y </v-tooltip>
+      </v-btn>
+      <v-btn @click="toggleTheme">
+        <v-icon size="x-large">mdi-theme-light-dark</v-icon>
+        <v-tooltip activator="parent" location="bottom">
+          Toggle Dark Mode
+        </v-tooltip>
       </v-btn>
       <!--      <v-btn to="/">-->
       <!--        <v-icon size="x-large">mdi-format-list-numbered</v-icon>-->

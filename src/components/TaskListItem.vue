@@ -36,13 +36,15 @@ function toggleTaskDone() {
 
 <template>
   <v-list-item @click="$emit('click')">
-    <template v-slot:title>
+    <template v-slot:prepend>
       <span class="mr-4">{{ index }}</span>
+    </template>
+    <template v-slot:title>
       <span v-if="!modelValue.done">{{ modelValue.description }}</span>
       <del v-else>{{ modelValue.description }}</del>
     </template>
     <template v-if="modelValue.startTime" v-slot:subtitle>
-      <TaskStartTime class="ml-1" :modelValue="modelValue" />
+      <TaskStartTime :modelValue="modelValue" />
     </template>
     <template v-slot:append>
       <span v-if="modelValue.duration">

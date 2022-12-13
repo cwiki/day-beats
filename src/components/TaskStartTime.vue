@@ -15,7 +15,7 @@ const text = computed(() => {
 });
 </script>
 <template>
-  <span style="color: #ff4f39">
+  <span class="text-info">
     <strong>{{ text }}</strong>
   </span>
 </template>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useTheme } from "vuetify";
 import { defineProps } from "vue";
 import { durationToHHmm } from "@/common/formatters";
 import { getFormFieldTextColor } from "@/common/helpers";
@@ -15,10 +14,6 @@ const props = defineProps({
     default: 0,
   },
 });
-
-const theme = useTheme();
-const textColor =
-  theme.global.name.value === "dark" ? "text-white" : "text-black";
 
 const durationLabel = computed(() => {
   if (props.duration) return "Duration " + durationToHHmm(props.duration);
