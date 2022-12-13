@@ -1,20 +1,20 @@
-import type {Task} from "@/common/interfaces";
+import type { Task } from "@/common/interfaces";
 
 export function durationToHHmm(minutes: number): string {
   return new Date(minutes * 60 * 1000).toISOString().substring(11, 16);
 }
 
 function minutesToTime(minutes: number) {
-  // todo fixed this it's forked
   const hours = Math.floor(minutes / 60);
   const mins = Math.floor(minutes % 60);
-  const afternoon = hours >= 12;
-  const tod = afternoon ? "pm" : "am";
-  let time = String(afternoon ? hours - 12 : hours);
-  if (mins > 0) {
-    time += ":" + mins;
-  }
-  return [time, tod];
+  const d = new Date();
+  d.setHours(hours, mins);
+  const dateString = d.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const [time, tod] = dateString.split(" ");
+  return [time, tod.toLowerCase()];
 }
 
 export function formatTimeRange(start: number, end: number): string {
@@ -33,11 +33,8 @@ export function formatTime(time: number): string {
 export function getTaskStartTimeText(task: Task): string {
   if (typeof task.startTime !== "number") return "";
   if (task.duration) {
-    return formatTimeRange(
-        task.startTime,
-        task.startTime + task.duration
-    );
+    return formatTimeRange(task.startTime, task.startTime + task.duration);
   } else {
-    return formatTime(task.startTime)
+    return formatTime(task.startTime);
   }
 }
