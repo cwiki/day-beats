@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineProps, defineEmits, watch, ref, type PropType } from "vue";
 import { getFormFieldTextColor } from "@/common/helpers";
+import { useTheme } from "vuetify";
 
 const emits = defineEmits(["update:modelValue"]);
 
@@ -13,6 +14,7 @@ const props = defineProps({
 
 const startTimeToggle = ref(false);
 const startTimeField = ref("");
+const theme = useTheme();
 
 watch(
   () => props.modelValue,
@@ -63,7 +65,7 @@ watch(startTimeField, (value) => {
           <v-col>
             <v-text-field
               v-model="startTimeField"
-              :class="getFormFieldTextColor()"
+              :class="getFormFieldTextColor(theme)"
               variant="plain"
               type="time"
               density="compact"

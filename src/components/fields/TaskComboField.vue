@@ -3,7 +3,9 @@ import { computed } from "vue";
 import { defineProps } from "vue";
 import { durationToHHmm } from "@/common/formatters";
 import { getFormFieldTextColor } from "@/common/helpers";
+import { useTheme } from "vuetify";
 
+const theme = useTheme();
 const props = defineProps({
   description: {
     type: String,
@@ -29,7 +31,7 @@ const durationLabel = computed(() => {
           <v-text-field
             :modelValue="description"
             @update:modelValue="$emit('update:description', $event)"
-            :class="getFormFieldTextColor()"
+            :class="getFormFieldTextColor(theme)"
             variant="plain"
             density="compact"
             label="Add Task (Required)"
@@ -40,8 +42,10 @@ const durationLabel = computed(() => {
         <v-col cols="4" sm="4" md="2">
           <v-text-field
             :modelValue="duration"
-            @update:modelValue="$emit('update:duration', $event ? Number($event) : 0)"
-            :class="getFormFieldTextColor()"
+            @update:modelValue="
+              $emit('update:duration', $event ? Number($event) : 0)
+            "
+            :class="getFormFieldTextColor(theme)"
             type="number"
             variant="plain"
             density="compact"
