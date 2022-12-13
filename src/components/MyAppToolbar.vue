@@ -16,6 +16,10 @@ function toggleTheme() {
     theme.global.name.value = "beatLight";
   }
 }
+
+function clearTasks() {
+  taskStore.addChanges("DELETE", ...taskStore.tasks);
+}
 </script>
 
 <template>
@@ -23,6 +27,17 @@ function toggleTheme() {
     <v-toolbar-title> Day Beats </v-toolbar-title>
     <v-spacer />
     <v-toolbar-items>
+      <v-btn
+        v-if="showUndoRedo"
+        color="red"
+        @click="clearTasks"
+        :disabled="!taskStore.tasks.length"
+      >
+        <v-icon size="x-large">mdi-layers-off</v-icon>
+        <v-tooltip activator="parent" location="bottom">
+          Clear All Tasks
+        </v-tooltip>
+      </v-btn>
       <v-btn
         v-if="showUndoRedo"
         @click="taskStore.undo()"
@@ -45,12 +60,6 @@ function toggleTheme() {
           Toggle Dark Mode
         </v-tooltip>
       </v-btn>
-      <!--      <v-btn to="/">-->
-      <!--        <v-icon size="x-large">mdi-format-list-numbered</v-icon>-->
-      <!--        <v-tooltip activator="parent" location="bottom">-->
-      <!--          Task List / Home-->
-      <!--        </v-tooltip>-->
-      <!--      </v-btn>-->
       <!--      <v-btn to="/config">-->
       <!--        <v-icon size="x-large">mdi-format-list-bulleted-triangle</v-icon>-->
       <!--        <v-tooltip activator="parent" location="bottom"> Day Config </v-tooltip>-->
