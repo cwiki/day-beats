@@ -24,8 +24,8 @@ const props = defineProps({
 
 const description = ref("");
 const duration = ref(0);
-const startTime = ref<number | undefined>(null);
-const segmentId = ref<String | undefined>(null);
+const startTime = ref<number | undefined>(undefined);
+const segmentId = ref<String | undefined>(undefined);
 
 watch(
   () => props.modelValue,
@@ -93,7 +93,7 @@ function deleteTask() {
               <v-radio
                 v-for="(segment, index) in segmentStore.segments"
                 :key="index"
-                :label="segment.description"
+                :label="segment.description.toString()"
                 :value="segment.id"
               >
               </v-radio>
