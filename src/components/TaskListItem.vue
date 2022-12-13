@@ -47,8 +47,8 @@ function toggleTaskDone() {
       <TaskStartTime :modelValue="modelValue" />
     </template>
     <template v-slot:append>
-      <span v-if="modelValue.duration">
-        {{ fmtDur(modelValue.duration) }}
+      <span>
+        {{ fmtDur(modelValue.duration || 0) }}
       </span>
       <v-btn
         class="ml-4"

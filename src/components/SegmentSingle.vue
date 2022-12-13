@@ -54,7 +54,11 @@ const isCurrentSegment = computed(() => {
               size="x-small"
               @click="segmentStore.setSegment(modelValue)"
             />
-            <span :class="{ 'text-primary': isCurrentSegment }">
+            <span
+              @click="segmentStore.setSegment(modelValue)"
+              class="mr-1"
+              :class="{ 'text-primary': isCurrentSegment }"
+            >
               {{ modelValue.description }}
             </span>
             {{ formatTimeRange(modelValue.startTime, modelValue.endTime) }}
