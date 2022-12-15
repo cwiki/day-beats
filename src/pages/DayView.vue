@@ -16,7 +16,7 @@ function keyupHandler(event: { ctrlKey: any; key: string }) {
       case "z":
         taskStore.undo();
         break;
-      case "y":
+      case "Z":
         taskStore.redo();
         break;
     }

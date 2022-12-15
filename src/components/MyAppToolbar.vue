@@ -18,7 +18,7 @@ function toggleTheme() {
 }
 
 function clearTasks() {
-  taskStore.addChanges("DELETE", ...taskStore.tasks);
+  taskStore.addChanges("DELETE", ...taskStore.tasks.filter(task => !task.recurring));
 }
 </script>
 
@@ -52,7 +52,7 @@ function clearTasks() {
         :disabled="!taskStore.undone.length"
       >
         <v-icon size="x-large">mdi-redo-variant</v-icon>
-        <v-tooltip activator="parent" location="bottom"> cmd + y </v-tooltip>
+        <v-tooltip activator="parent" location="bottom"> cmd + shift + z </v-tooltip>
       </v-btn>
       <v-btn @click="toggleTheme">
         <v-icon size="x-large">mdi-theme-light-dark</v-icon>

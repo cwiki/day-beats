@@ -27,6 +27,14 @@ function toggleTaskDone() {
   clone.done = !clone.done;
   taskStore.addChanges("UPDATE", clone);
 }
+
+function toggleRecurring() {
+  if (props.readonly) return;
+  const clone = Object.assign({}, props.modelValue);
+  console.log(clone)
+  clone.recurring = !clone.recurring;
+  taskStore.addChanges("UPDATE", clone);
+}
 </script>
 
 <template>
@@ -45,8 +53,11 @@ function toggleTaskDone() {
       <span>
         {{ fmtDur(modelValue.duration || 0) }}
       </span>
+      <v-btn class="ml-2" variant="flat" @click.stop="toggleRecurring">
+        <v-icon :color="modelValue.recurring ? 'green' : ''"> mdi-refresh </v-icon>
+        <v-tooltip activator="parent" location="bottom"> Recurring </v-tooltip>
+      </v-btn>
       <v-btn
-        class="ml-4"
         variant="flat"
         @click.stop="toggleTaskDone"
         icon

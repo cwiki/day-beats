@@ -8,6 +8,7 @@ export interface Task extends Identifiable {
   startTime?: number;
   done?: Boolean;
   segmentId?: String;
+  recurring?: Boolean;
   order?: number; // should be cleared when segment changed, rewrite order to integers; 0 = unordered
 }
 
