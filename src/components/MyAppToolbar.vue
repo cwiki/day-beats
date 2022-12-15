@@ -18,7 +18,17 @@ function toggleTheme() {
 }
 
 function clearTasks() {
-  taskStore.addChanges("DELETE", ...taskStore.tasks.filter(task => !task.recurring));
+  taskStore.addChanges(
+    "DELETE",
+    ...taskStore.tasks.filter((task) => !task.recurring)
+  );
+  taskStore.addChanges(
+    "UPDATE",
+    ...taskStore.tasks.map((task) => {
+      task.done = false;
+      return task;
+    })
+  );
 }
 </script>
 
@@ -35,7 +45,7 @@ function clearTasks() {
       >
         <v-icon size="x-large">mdi-layers-off</v-icon>
         <v-tooltip activator="parent" location="bottom">
-          Clear All Tasks
+          Clear Tasks (Repeating will Reset)
         </v-tooltip>
       </v-btn>
       <v-btn
@@ -44,7 +54,7 @@ function clearTasks() {
         :disabled="!taskStore.changes.length"
       >
         <v-icon size="x-large">mdi-undo-variant</v-icon>
-        <v-tooltip activator="parent" location="bottom"> cmd + z </v-tooltip>
+        <v-tooltip activator="parent" location="bottom"> Ctrl + z </v-tooltip>
       </v-btn>
       <v-btn
         v-if="showUndoRedo"
@@ -52,7 +62,9 @@ function clearTasks() {
         :disabled="!taskStore.undone.length"
       >
         <v-icon size="x-large">mdi-redo-variant</v-icon>
-        <v-tooltip activator="parent" location="bottom"> cmd + shift + z </v-tooltip>
+        <v-tooltip activator="parent" location="bottom">
+          Ctrl + shift + z
+        </v-tooltip>
       </v-btn>
       <v-btn @click="toggleTheme">
         <v-icon size="x-large">mdi-theme-light-dark</v-icon>

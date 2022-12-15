@@ -6,6 +6,7 @@ import { useSegmentStore } from "@/stores/segment";
 import TaskListItem from "@/components/TaskListItem.vue";
 import TaskComboField from "@/components/fields/TaskComboField.vue";
 import StartTimeField from "@/components/fields/StartTimeField.vue";
+import { v4 as uuidV4 } from "uuid";
 
 const emits = defineEmits(["update:modelValue"]);
 const taskStore = useTaskStore();
@@ -17,8 +18,9 @@ const props = defineProps({
     required: true,
   },
   task: {
-    type: Object as PropType<Task>,
-    required: true,
+    type: Object as PropType<Task | null>,
+    default: null,
+    required: false,
   },
 });
 
@@ -31,10 +33,17 @@ watch(
   () => props.modelValue,
   (opened) => {
     if (opened) {
-      description.value = String(props.task.description);
-      duration.value = props.task.duration || 0;
-      startTime.value = props.task.startTime;
-      segmentId.value = props.task.segmentId;
+      if (props.task) {
+        description.value = String(props.task.description);
+        duration.value = props.task.duration || 0;
+        startTime.value = props.task.startTime;
+        segmentId.value = props.task.segmentId;
+      } else {
+        description.value = "";
+        duration.value = 0;
+        startTime.value = undefined;
+        segmentId.value = segmentStore.currentSegment?.id;
+      }
     }
   },
   { immediate: true }
@@ -49,14 +58,27 @@ const updatedTask = computed(() => {
   });
 });
 
+const isExisting = computed(() => props.task && props.task.id);
+
 function saveTask() {
-  taskStore.addChanges("UPDATE", updatedTask.value);
-  emits("update:modelValue", false);
+  if (description.value !== "") {
+    if (updatedTask.value && updatedTask.value.id) {
+      taskStore.addChanges("UPDATE", updatedTask.value);
+    } else {
+      taskStore.addChanges(
+        "INSERT",
+        Object.assign({}, updatedTask.value, { id: uuidV4() })
+      );
+    }
+    emits("update:modelValue", false);
+  }
 }
 
 function deleteTask() {
-  taskStore.addChanges("DELETE", props.task);
-  emits("update:modelValue", false);
+  if (props.task && props.task.id) {
+    taskStore.addChanges("DELETE", props.task);
+    emits("update:modelValue", false);
+  }
 }
 </script>
 
@@ -76,7 +98,9 @@ function deleteTask() {
         <v-toolbar-title>Edit Task</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn variant="text" @click="saveTask"> Save </v-btn>
+          <v-btn variant="text" @click="saveTask">
+            {{ isExisting ? "save" : "create" }}
+          </v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <v-card-text>
@@ -110,13 +134,20 @@ function deleteTask() {
             />
             <v-card class="mt-8" variant="flat">
               <v-card-actions>
-                <v-spacer />
-                <v-btn @click="deleteTask" color="error" variant="text"
+                <v-btn
+                  v-if="isExisting"
+                  @click="deleteTask"
+                  color="error"
+                  variant="text"
                   >Delete</v-btn
                 >
-                <v-btn @click="saveTask" color="primary" variant="flat"
-                  >Save</v-btn
+                <v-spacer />
+                <v-btn @click="$emit('update:modelValue', false)" variant="text"
+                  >cancel</v-btn
                 >
+                <v-btn @click="saveTask" color="primary" variant="flat">
+                  {{ isExisting ? "save" : "create" }}
+                </v-btn>
               </v-card-actions>
             </v-card>
             <button type="submit" class="screen-reader-text">save</button>

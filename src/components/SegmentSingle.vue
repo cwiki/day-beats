@@ -42,7 +42,7 @@ const isCurrentSegment = computed(() => {
   <v-sheet>
     <v-row>
       <v-col>
-        <h2 class="text-sm-body-2">
+        <span class="text-sm-body-2">
           <strong>
             <v-btn
               :color="isCurrentSegment ? 'primary' : ''"
@@ -61,9 +61,12 @@ const isCurrentSegment = computed(() => {
             >
               {{ modelValue.description }}
             </span>
-            {{ formatTimeRange(modelValue.startTime, modelValue.endTime) }}
+            <br v-if="$vuetify.display.mobile" />
+            <span class="text-no-wrap" :class="{ 'ml-8': $vuetify.display.mobile }">
+              {{ formatTimeRange(modelValue.startTime, modelValue.endTime) }}
+            </span>
           </strong>
-        </h2>
+        </span>
       </v-col>
       <v-col class="text-right">
         <TimeCompare :used="used" :available="available" />

@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { onBeforeUnmount } from "vue";
+import { onBeforeUnmount, ref } from "vue";
 import { useTaskStore } from "@/stores/task";
 import { useSegmentStore } from "@/stores/segment";
-import NewTaskBarForm from "@/components/NewTaskBarForm.vue";
 import DayProgress from "@/components/DayProgress.vue";
 import SegmentSingle from "@/components/SegmentSingle.vue";
+import EditTaskDialog from "@/components/EditTaskDialog.vue";
 
 const taskStore = useTaskStore();
 const segmentStore = useSegmentStore();
+const segments = segmentStore.segments;
+const newTaskDialog = ref(false);
 
 document.addEventListener("keyup", keyupHandler);
 function keyupHandler(event: { ctrlKey: any; key: string }) {
@@ -19,25 +21,28 @@ function keyupHandler(event: { ctrlKey: any; key: string }) {
       case "Z":
         taskStore.redo();
         break;
+      case "n":
+        newTaskDialog.value = true;
+        break;
     }
   }
 }
-
-const segments = segmentStore.segments;
 
 onBeforeUnmount(() => {
   document.removeEventListener("keyup", keyupHandler);
 });
 </script>
 
+<style scoped>
+.my-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+</style>
+
 <template>
   <v-container>
-    <v-row class="pt-8">
-      <v-col cols="12">
-        <NewTaskBarForm v-if=segmentStore.currentSegment :segment="segmentStore.currentSegment" />
-        <div v-else>Segment is required</div>
-      </v-col>
-    </v-row>
     <v-row class="px-8">
       <v-col>
         <DayProgress />
@@ -53,4 +58,17 @@ onBeforeUnmount(() => {
     <v-btn class="screen-reader-text" @click="taskStore.undo()">undo</v-btn>
     <v-btn class="screen-reader-text" @click="taskStore.redo()">redo</v-btn>
   </v-container>
+  <v-tooltip text="Ctrl + n">
+    <template v-slot:activator="{ props }">
+      <v-btn
+        v-bind="props"
+        class="my-fab"
+        fab
+        icon="mdi-plus"
+        color="primary"
+        @click="newTaskDialog = !newTaskDialog"
+      />
+    </template>
+  </v-tooltip>
+  <EditTaskDialog v-model="newTaskDialog" />
 </template>
