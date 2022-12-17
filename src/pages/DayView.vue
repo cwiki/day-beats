@@ -14,18 +14,10 @@ const newTaskDialog = ref(false);
 
 document.addEventListener("keyup", keyupHandler);
 function keyupHandler(event: { ctrlKey: any; key: string }) {
-  if (event.ctrlKey) {
-    switch (event.key) {
-      case "z":
-        taskStore.undo();
-        break;
-      case "Z":
-        taskStore.redo();
-        break;
-      case "n":
-        newTaskDialog.value = true;
-        break;
-    }
+  switch (event.key) {
+    case "/":
+      newTaskDialog.value = true;
+      break;
   }
 }
 
@@ -68,7 +60,7 @@ onBeforeUnmount(() => {
     <v-btn class="screen-reader-text" @click="taskStore.undo()">undo</v-btn>
     <v-btn class="screen-reader-text" @click="taskStore.redo()">redo</v-btn>
   </v-container>
-  <v-tooltip text="Ctrl + n">
+  <v-tooltip text="Add a New task (press /)">
     <template v-slot:activator="{ props }">
       <v-btn
         v-bind="props"

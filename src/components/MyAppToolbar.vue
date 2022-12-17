@@ -49,21 +49,19 @@ const drawer = ref(false);
       </v-btn>
       <v-btn
         v-if="showUndoRedo"
+        :class="{ 'text-grey': !taskStore.changes.length }"
         @click="taskStore.undo()"
-        :disabled="!taskStore.changes.length"
       >
         <v-icon size="x-large">mdi-undo-variant</v-icon>
-        <v-tooltip activator="parent" location="bottom"> Ctrl + z </v-tooltip>
+        <v-tooltip activator="parent" location="bottom">Undo</v-tooltip>
       </v-btn>
       <v-btn
         v-if="showUndoRedo"
+        :class="{ 'text-grey': !taskStore.undone.length }"
         @click="taskStore.redo()"
-        :disabled="!taskStore.undone.length"
       >
         <v-icon size="x-large">mdi-redo-variant</v-icon>
-        <v-tooltip activator="parent" location="bottom">
-          Ctrl + shift + z
-        </v-tooltip>
+        <v-tooltip activator="parent" location="bottom">Redo</v-tooltip>
       </v-btn>
       <!--      <v-btn @click="toggleTheme">-->
       <!--        <v-icon size="x-large">mdi-theme-light-dark</v-icon>-->
@@ -84,7 +82,11 @@ const drawer = ref(false);
     </v-list>
     <template v-slot:append>
       <v-divider />
-      <v-list-item class="mt-2" prepend-icon="mdi-theme-light-dark" title="Toggle Dark Mode" @click="toggleTheme" />
+      <v-list-item
+        prepend-icon="mdi-theme-light-dark"
+        title="Toggle Dark Mode"
+        @click="toggleTheme"
+      />
       <!--      <v-list-item-->
       <!--        lines="two"-->
       <!--        prepend-avatar="https://randomuser.me/api/portraits/women/81.jpg"-->

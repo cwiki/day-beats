@@ -23,7 +23,7 @@ export const useTaskStore = defineStore("task", {
     unassignedTasks(): Array<Task> {
       const segments = useSegmentStore();
       const segmentIds = segments.segments.map((seg) => seg.id);
-      return this.tasks.filter((task) => !segmentIds.includes(task.id));
+      return this.tasks.filter((task) => !task.segmentId || !segmentIds.includes(task.segmentId));
     },
     taskIndexes() {
       const segments = useSegmentStore();
