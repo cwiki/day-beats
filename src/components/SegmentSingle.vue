@@ -62,7 +62,10 @@ const isCurrentSegment = computed(() => {
               {{ modelValue.description }}
             </span>
             <br v-if="$vuetify.display.mobile" />
-            <span class="text-no-wrap" :class="{ 'ml-8': $vuetify.display.mobile }">
+            <span
+              class="text-no-wrap"
+              :class="{ 'ml-8': $vuetify.display.mobile }"
+            >
               {{ formatTimeRange(modelValue.startTime, modelValue.endTime) }}
             </span>
           </strong>

@@ -6,55 +6,37 @@ import { getDefaultSegments } from "@/common/helpers";
 import { useTaskStore } from "@/stores/task";
 import { useSegmentStore } from "@/stores/segment";
 import { useTheme } from "vuetify";
+import { CACHE_NAME, type Cache } from "@/common/interfaces";
 
 const taskStore = useTaskStore();
 const segmentStore = useSegmentStore();
 const segments = getDefaultSegments();
 const theme = useTheme();
 
-const tasks = window.localStorage.getItem("DAY_BEAT_TASKS");
-if (tasks) taskStore.setTaskState(JSON.parse(tasks));
-const segs = window.localStorage.getItem("DAY_BEAT_SEGMENTS");
-if (segs) segmentStore.setSegmentState(JSON.parse(segs));
-const vTheme = window.localStorage.getItem("VUETIFY_THEME");
-if (vTheme) theme.global.name.value = vTheme;
-
-// init the segments if there are none
-if (!segmentStore.segments.length) {
-  segmentStore.addChanges("INSERT", ...segments);
+function updateCache() {
+  const cache: Cache = {
+    theme: theme.global.name.value,
+    tasks: taskStore.tasks,
+    segments: segmentStore.segments,
+  };
+  window.localStorage.setItem(CACHE_NAME, JSON.stringify(cache));
+  console.log("DBS_CACHE", "updated");
 }
 
-function toggleTheme() {
-  if (theme.global.name.value === "beatLight") {
-    theme.global.name.value = "beatDark";
-  } else {
-    theme.global.name.value = "beatLight";
-  }
-  window.localStorage.setItem("VUETIFY_THEME", theme.global.name.value);
+function loadCache(cacheJson: string) {
+  const cache: Cache = JSON.parse(cacheJson);
+  theme.global.name.value = cache.theme.toString();
+  taskStore.setTaskState(cache.tasks);
+  segmentStore.setSegmentState(cache.segments);
 }
 
-watch(
-  () => theme.global.name.value,
-  (value) => {
-    window.localStorage.setItem("VUETIFY_THEME", value);
-  }
-);
+const cache = window.localStorage.getItem(CACHE_NAME);
+if (cache) loadCache(cache);
+else segmentStore.addChanges("INSERT", ...segments);
 
-watch(
-  () => taskStore.tasks,
-  (tasks) => {
-    window.localStorage.setItem("DAY_BEAT_TASKS", JSON.stringify(tasks));
-    console.log("DAY_BEAT_TASKS", "saved");
-  }
-);
-
-watch(
-  () => segmentStore.segments,
-  (segments) => {
-    window.localStorage.setItem("DAY_BEAT_SEGMENTS", JSON.stringify(segments));
-    console.log("DAY_BEAT_SEGMENTS", "saved");
-  }
-);
+watch(() => taskStore.tasks, updateCache);
+watch(() => segmentStore.segments, updateCache);
+watch(() => theme.global.name.value, updateCache);
 </script>
 
 <template>

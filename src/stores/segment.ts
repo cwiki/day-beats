@@ -67,6 +67,9 @@ export const useSegmentStore = defineStore("segment", {
       const undoneChange = this.undone.pop();
       if (undoneChange !== undefined) this.changes.push(undoneChange);
     },
+    deleteAllSegments() {
+      this.addChanges("DELETE", ...this.segments)
+    },
     addChanges(action: ChangeType, ...segments: Array<Segment>) {
       this.undone = [];
       // immediately perform segment merge

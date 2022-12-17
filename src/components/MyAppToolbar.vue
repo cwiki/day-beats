@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useTaskStore } from "@/stores/task";
 import { useTheme } from "vuetify";
 
 const taskStore = useTaskStore();
 const route = useRoute();
-const showUndoRedo = computed(() => route.name === "Beats");
 const theme = useTheme();
 
 function toggleTheme() {
@@ -18,18 +17,18 @@ function toggleTheme() {
 }
 
 function clearTasks() {
-  taskStore.addChanges(
-    "DELETE",
-    ...taskStore.tasks.filter((task) => !task.recurring)
-  );
-  taskStore.addChanges(
-    "UPDATE",
-    ...taskStore.tasks.map((task) => {
-      task.done = false;
-      return task;
-    })
-  );
+  const toDelete = taskStore.tasks.filter((task) => !task.recurring);
+  const toReset = taskStore.tasks.map((task) => {
+    task.done = false;
+    return task;
+  });
+
+  if (toDelete) taskStore.addChanges("DELETE", ...toDelete);
+  if (toReset) taskStore.addChanges("UPDATE", ...toReset);
 }
+
+const showUndoRedo = computed(() => route.name === "Beats");
+const drawer = ref(false);
 </script>
 
 <template>
@@ -66,12 +65,32 @@ function clearTasks() {
           Ctrl + shift + z
         </v-tooltip>
       </v-btn>
-      <v-btn @click="toggleTheme">
-        <v-icon size="x-large">mdi-theme-light-dark</v-icon>
-        <v-tooltip activator="parent" location="bottom">
-          Toggle Dark Mode
-        </v-tooltip>
+      <!--      <v-btn @click="toggleTheme">-->
+      <!--        <v-icon size="x-large">mdi-theme-light-dark</v-icon>-->
+      <!--        <v-tooltip activator="parent" location="bottom">-->
+      <!--          Toggle Dark Mode-->
+      <!--        </v-tooltip>-->
+      <!--      </v-btn>-->
+      <v-btn @click="drawer = !drawer">
+        <v-icon size="x-large">mdi-menu-open</v-icon>
       </v-btn>
     </v-toolbar-items>
   </v-app-bar>
+
+  <v-navigation-drawer v-model="drawer" location="right" absolute temporary>
+    <v-list density="compact" nav>
+      <v-list-item prepend-icon="mdi-list-status" title="Task List" to="/" />
+      <v-list-item prepend-icon="mdi-cog-outline" title="Config" to="config" />
+    </v-list>
+    <template v-slot:append>
+      <v-divider />
+      <v-list-item class="mt-2" prepend-icon="mdi-theme-light-dark" title="Toggle Dark Mode" @click="toggleTheme" />
+      <!--      <v-list-item-->
+      <!--        lines="two"-->
+      <!--        prepend-avatar="https://randomuser.me/api/portraits/women/81.jpg"-->
+      <!--        title="Jane Smith"-->
+      <!--        subtitle="Logged in"-->
+      <!--      ></v-list-item>-->
+    </template>
+  </v-navigation-drawer>
 </template>

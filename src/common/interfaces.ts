@@ -29,3 +29,11 @@ export interface Change {
   action: ChangeType;
   entity: Identifiable;
 }
+
+export interface Cache {
+  theme: String;
+  tasks: Array<Task>;
+  segments: Array<Segment>;
+}
+
+export const CACHE_NAME = "DBS_CACHE";

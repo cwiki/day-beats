@@ -19,6 +19,12 @@ export const useTaskStore = defineStore("task", {
         state.changes
       );
     },
+    // Returns the list of tasks that do not have active segments
+    unassignedTasks(): Array<Task> {
+      const segments = useSegmentStore();
+      const segmentIds = segments.segments.map((seg) => seg.id);
+      return this.tasks.filter((task) => !segmentIds.includes(task.id));
+    },
     taskIndexes() {
       const segments = useSegmentStore();
       const tasks: Array<Task> = [];
@@ -58,6 +64,9 @@ export const useTaskStore = defineStore("task", {
     },
     setTaskState(taskState: Array<Task>) {
       this.taskState = taskState;
+    },
+    deleteAllTasks() {
+      this.addChanges("DELETE", ...this.tasks)
     },
     addChanges(action: ChangeType, ...tasks: Array<Task>) {
       this.undone = [];

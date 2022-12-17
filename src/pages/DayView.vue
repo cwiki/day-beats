@@ -5,6 +5,7 @@ import { useSegmentStore } from "@/stores/segment";
 import DayProgress from "@/components/DayProgress.vue";
 import SegmentSingle from "@/components/SegmentSingle.vue";
 import EditTaskDialog from "@/components/EditTaskDialog.vue";
+import TaskList from "@/components/TaskList.vue";
 
 const taskStore = useTaskStore();
 const segmentStore = useSegmentStore();
@@ -49,12 +50,21 @@ onBeforeUnmount(() => {
       </v-col>
     </v-row>
     <h1 class="screen-reader-text">Task List</h1>
+    <!--Segmented Tasks-->
     <SegmentSingle
       class="mt-8 px-12"
       v-for="segment in segments"
       :key="segment.id.toString()"
       :model-value="segment"
     />
+    <!--Unassigned Tasks-->
+    <div v-show="taskStore.unassignedTasks.length" class="mt-8">
+      <v-row>
+        <v-col class="pl-4 mx-8 mt-4">
+          <TaskList v-model="taskStore.unassignedTasks" />
+        </v-col>
+      </v-row>
+    </div>
     <v-btn class="screen-reader-text" @click="taskStore.undo()">undo</v-btn>
     <v-btn class="screen-reader-text" @click="taskStore.redo()">redo</v-btn>
   </v-container>
